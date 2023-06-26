@@ -1,60 +1,82 @@
-# tasks_list
+# ICP Task Manager
 
-Welcome to your new tasks_list project and to the internet computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+This project is an example task manager built on the Internet Computer (ICP) platform. It provides functionality to add, edit, retrieve, and remove tasks. The project is implemented using the Motoko programming language and utilizes various base libraries for data structures and operations.
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+## Table of Contents
 
-To learn more before you start working with tasks_list, see the following documentation available online:
+- [Introduction](#introduction)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Examples](#examples)
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/quickstart/hello10mins)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/build/install-upgrade-remove)
-- [Motoko Programming Language Guide](https://internetcomputer.org/docs/current/developer-docs/build/cdks/motoko-dfinity/motoko/)
-- [Motoko Language Quick Reference](https://internetcomputer.org/docs/current/references/motoko-ref/)
-- [JavaScript API Reference](https://erxue-5aaaa-aaaab-qaagq-cai.raw.icp0.io)
+## Introduction
 
-If you want to start working on your project right away, you might want to try the following commands:
+The ICP Task Manager is designed to help you manage your tasks efficiently. It provides a simple yet powerful interface to add, edit, retrieve, and remove tasks. Each task consists of a title, creation timestamp, and last edit timestamp.
 
-```bash
-cd tasks_list/
-dfx help
-dfx canister --help
-```
+The project utilizes the following base libraries for its implementation:
+- `mo:base/HashMap`: Provides a hash map data structure to store tasks.
+- `mo:base/Hash`: Implements hashing functions used for key generation in the hash map.
+- `mo:base/Iter`: Offers utility functions for working with collections and iterators.
+- `mo:base/Time`: Provides time-related functions to capture task creation and edit timestamps.
+- `mo:base/Nat`: Implements operations and conversions for natural numbers.
+- `mo:base/Text`: Offers text manipulation functions used for task titles.
 
-## Running the project locally
+## Getting Started
 
-If you want to test your project locally, you can use the following commands:
+To get started with the ICP Task Manager project, follow these steps:
 
-```bash
-# Starts the replica, running in the background
-dfx start --background
+1. Ensure you have the necessary dependencies and development environment set up for Internet Computer (ICP) development.
+2. Clone the project repository to your local machine.
+3. Do `npm install` in the directory
+4. Deploy the project to the Internet Computer using the `dfx deploy` command:
 
-# Deploys your canisters to the replica and generates your candid interface
-dfx deploy
-```
+   ```shell
+   dfx deploy
+   ```
 
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
+   This will build and deploy the project canisters to your local Internet Computer environment.
 
-If you have made changes to your backend canister, you can generate a new candid interface with
+5. Once deployed, you can interact with the task manager using the provided API.
 
-```bash
-npm run generate
-```
+## Usage
 
-at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
+The ICP Task Manager exposes the following functions through its API:
 
-If you are making frontend changes, you can start a development server with
+- `addTask(title: Text)`: Adds a new task with the given title to the task manager. Returns the ID (Nat) of the created task.
+- `getTask(taskId: Nat)`: Retrieves the task with the specified ID from the task manager. Returns the task object if found, otherwise returns null.
+- `getTasks()`: Retrieves all tasks stored in the task manager. Returns an array of tuples containing the task ID (Nat) and task object.
+- `editTask(taskId: Nat, title: Text)`: Modifies the title of the task with the specified ID. Returns a Boolean indicating the success of the operation.
+- `removeTask(taskId: Nat)`: Removes the task with the specified ID from the task manager.
 
-```bash
-npm start
-```
+## Examples
 
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
+Here are some examples of how you can call the functions via the dfx command line:
 
-### Note on frontend environment variables
+- Add a task:
+  ```shell
+  dfx canister call task_manager addTask '("Task Title")'
+  ```
 
-If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
+- Get a task by ID:
+  ```shell
+  dfx canister call task_manager getTask '(1)'
+  ```
 
-- set`DFX_NETWORK` to `ic` if you are using Webpack
-- use your own preferred method to replace `process.env.DFX_NETWORK` in the autogenerated declarations
-  - Setting `canisters -> {asset_canister_id} -> declarations -> env_override to a string` in `dfx.json` will replace `process.env.DFX_NETWORK` with the string in the autogenerated declarations
-- Write your own `createActor` constructor
+- Get all tasks:
+  ```shell
+  dfx canister call task_manager getTasks
+  ```
+
+- Edit a task:
+  ```shell
+  dfx canister call task_manager editTask '(1, "New Task Title")'
+  ```
+
+- Remove a task:
+  ```shell
+  dfx canister call task_manager removeTask '(1)'
+  ```
+
+---
+
+Feel free to customize the README
