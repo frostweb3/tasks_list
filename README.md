@@ -78,5 +78,3 @@ Here are some examples of how you can call the functions via the dfx command lin
   ```
 
 ---
-
-Feel free to customize the README
